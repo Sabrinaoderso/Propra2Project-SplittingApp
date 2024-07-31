@@ -14,3 +14,9 @@ Mit folgenden Schritten kann man die Applikation zum laufen bringen:
 * `docker compose up --build` im Projektordner ausführen
 * Browserfenster öffnen und zu `localhost:9000` navigieren
 * Einloggen mit Githubhandle
+
+== Credit:
+
+- Credit goes out to the good collaboration of our group 20: Gedeon Prosch, Luca Happel, Paul W. and Sabrina Ebert, as well as our Propra2 Tutores for helpful advice!
+
+- Link to the original project containing the full commit history: https://github.com/hhu-propra2-ws22/projekt_gruppe_20/tree/main
