@@ -1,0 +1,189 @@
+= Dokumenationfile zu Splitter
+
+== 1. Einführung und Ziele
+
+=== Anforderungen:
+(siehe aufgabe.adoc -> Praktikumsaufgabe)
+
+* *Neue Gruppen* können erzeugt werden
+* Personen können über ihren *GitHub-Namen hinzugefügt* werden
+* Personen, die in einer Gruppe sind, können *Ausgaben*, die für die Gruppe
+  (oder auch nur Teile der Gruppe!) getätigt wurden *eintragen*.
+* Die *Nutzer:innen* der Anwendung können eine *Übersicht über alle Gruppen* bekommen,
+  in denen sie eingetragen sind. Von dieser Übersicht aus können sie in eine
+  Detailansicht der einzelnen Gruppen navigieren und sehen dort:
+** Alle getätigten Ausgaben der Gruppe und welche Personen beteiligt sind.
+  Alle Ausgaben, die in irgendeiner Weise die eigene Person betreffen sind geeignet hervorgehoben.
+** Eine Übersicht über die notwendigen Transaktionen zwischen einzelnen Personen,
+  um die Auslagen auszugleichen.
+* Zu einem bestimmten Zeitpunkt kann die *Gruppe geschlossen* werden,
+  danach sind keine Eintragungen mehr möglich. Es ist aber immer noch möglich,
+  alle Details der Gruppe anzuschauen. Geschlossene Gruppen sind auf der Übersichtsseite
+  von offenen getrennt aufgeführt.
+
+=== Qualitätsziele:
+
+* Optimisierte und sichere Anwendung
+** Es werden keine falschen und möglichst wenig überflüssige Überweisungen vorgeschlagen.
+** Es ist nicht möglich auf fremde Gruppen zuzugreifen.
+* Hohe Wartbarkeit
+** Durch viele Tests wird sichergestellt, das selbst kleine fehlerhafte Änderungen erkannt werden.
+** Der Code soll die Anforderungen Google Style-Guides einhalten, damit er für andere Entwickler übersichtlicher ist.
+* Accessability
+** Die Webseite soll ansprechend gestaltet sein.
+** Die Webseite soll die Accessibility-Anforderungen von Wochenblatt 4 erfüllen.
+
+== 2. Rahmenbedingungen
+
+==== Technische Rahmenbedingungen:
+|===
+| Benutzer-Hardware: | Jedes browserfähige Gerät
+| Server-Hardware: | Ein Java-fähiger Webserver
+| Betriebssystem: | Alles, worauf Docker läuft
+| Programmiersprache: | Java / HTML / CSS / Postgres
+| Implementierung: | Java 17 als SpringBoot 3.0 App
+| Ausführung: | über docker compose up, Postgres
+| Code Conventions: | Checkstyle
+| Accessiblity: | ( siehe Wochenblatt12)
+|===
+
+==== Organisatorische Rahmenbedingungen:
+* Zeitraum: 3 Wochen: 27.02-17.03
+* Team: Paul Wetzel, Gedeon Prosch, Sabrina Ebert und Luca Happel
+* Dokumentationsschema: arc42
+
+== 3. Kontext und Umfang
+
+Bei unserer Applikation handelt es sich um ein MVP (Minimum Viable Product). Das heisst, das der Fokus auf dem möglichen Einsatz und der Erweiterbarkeit liegt.
+
+=== Wofür ist unser System nicht zuständig?
+
+* Es ist nicht möglich Teilnehmer oder Ausgaben aus Gruppen zu entfernen.
+* Es können keine Überweisungen über die Applikation getätigt werden.
+* Getätigte Überweisungen können auch nicht mannuell als abgeschlossen markiert werden.
+* Es wird nicht überprüft ob ein angegebener GitHub Benutzer tatsächlich existiert
+
+=== Berechtigungen:
+(siehe aufgabe.adoc -> Berechtigungen)
+
+* Gruppengründung und Schließung
+** Jede Person mit einem GitHub-Account kann eine neue Gruppe gründen. Die Person, die die Gruppe gründet, wird automatisch zur Gruppe hinzugefügt.
+** Jede Person in einer Gruppe kann neue Teilnehmer:innen hinzufügen. Dazu werden GitHub-Namen eingetragen. In unserem MVP wird nur geprüft, ob der GitHub-Name prinzipiell möglich ist, nicht, ob der Account existiert. Nachträgliche Änderungen des Accountnamens werden nicht berücksichtigt.
+** Sobald eine Ausgabe für die Gruppe eingetragen wurde, können keine weiteren Personen mehr hinzugefügt werden.
+** Jede Person in einer Gruppe kann die Gruppe schließen.
+
+* Ansichten
+** Jede Person bekommt eine Liste mit allen Gruppen, in denen sie Mitglied ist, angezeigt.
+** Jede Person kann die Übersicht über jede Gruppe, in der sie Mitglied ist, anschauen.
+** Jede Person kann die Übersicht über die zum momentanen Zeitpunkt zum Ausgleich notwendigen Transaktionen für alle Gruppen, in der sie Mitglied ist, anschauen.
+
+== 4. Lösungsstrategie
+
+- Vorgehensweise
+* Organisatorisch:
+** 2-mal täglich Besprechen von Zielen und Absprache der Aufgabenteilung, Berichterstattung, Autausch für den nächsten Tag *9.00* und *13.00* Uhr
+** Abhängig von Größe der Aufgabe gemeinsames Arbeiten/ Mob Session oder Aufteilung der Aufgaben mit Branches
+** Domainlogik zusammen mit Mob
+** über Webex Breakout: 20 und oder in Präsenz
+** Verwendung von Git Kraken
+
+- Architekturentscheidungen
+** Onion-Architekutr
+** DDD,  Aggregate
+
+- Testing
+** Testing: Test Driven Development (TDD) in der Domainlogik (JUnit Tests) und Persistenz
+** ArchUnit Tests für Onion Architektur und DDD
+
+- Technologieentscheidungen?
+** Frameworks: Spring Boot, Thymeleaf
+** Datenbank: Docker, Postgres
+** HTML/CSS: Bootstrap
+
+- Qualitätskontrolle:
+** CI: Github Actions
+** Code Convention Überprüfung: Checkstyle, Spotbugs
+
+- Ubiquitous Language:
+** Aussagekräftige Benennung
+** Auch außerhalb der IT verständlich
+** Sprache: Deutsch
+
+== 5. Bausteine der Applikation
+=== Hierarchischer Aufbau des Projekts
+* Packages: Persistence, Web, Service, Domain
+* In Form einer Onion Architektur
+
+* Persistence:
+** Persistente Datenspeicherung
+
+* Web:
+** Anbindung ans Web
+** UI (User Interface) (HTML Seiten)
+
+* Service: Greift auf Repositorys/ Datenbanken zu und Datenverwaltung
+
+* Domain: Geschäftslogik
+
+=== UML Diagramm der Domainlogik:
+image:/plantum-domain.png[align="center"]
+
+=== Tests
+Die Tests sind ebenfalls nach dem Onion Prinzip in Packages angeordnet.
+Außerdem gibt es noch das Package ArchUnitTests das Architekturtests für Onion Architektur und Aggregate enthält.
+
+=== Mapping/ Routing:
+** Post-Anfragen: Mithilfe von Forms werden die vom Controller über das Routing/Mapping, empfangene Daten in das Model als Attribute übergeben, diese werden dann mit Thymeleaf dynamisch in unsere HTML Seiten eingefügt.
+Bei einer nötigen Verarbeitung oder einem Zugriff auf die Datenbank werden die Services vorher mit den Formdaten aufgerufen.
+** Get-Anfragen: Ähnlich wie beim Post-Mapping werden die Daten über die Services geholt und dann als Attribute an das Model weitergegeben.
+Thymeleaf fügt diese dann dynamisch in die HTML Seiten ein.
+
+== 6. Starten der Applikation
+
+Mit folgenden Schritten kann man die Applikation zum laufen bringen:
+
+* `CLIENT_SECRET` und `CLIENT_ID` für eine OAuth-Anwendung auf GitHub erstellen
+* `CLIENT_SECRET` und `CLIENT_ID` in die dafür vorgesehenen Felder in der `docker-compose.yaml` eintragen
+* `docker compose up --build` im Projektordner ausführen
+* Browserfenster öffnen und zu `localhost:9000` navigieren
+* Einloggen mit Githubhandle
+
+== 7. Architektur-Entscheidungen
+
+Wir haben uns entschieden die Klassen Benutzer, Ausgabe und Schuld zu
+Records zu machen.
+Diese können dann später bei Bedarf aus den gespeicherten Daten der Gruppe-Klasse erzeugt werden.
+Die Record erfüllen genau das, was wir haben wollen:
+
+* Die Daten der Records sollen im Nachhinein nicht verändert werden können
+* Getter sind automatisch integriert
+
+Dadurch wird unsere Domainlogik(Aggregatstruktur, Größe der Klassen, Kopplung) deutlich übersichtlicher.
+
+==== _Berechnung der notwendigen Überweisungen:_
+
+Wir haben uns für einen schnellen Algorithmus entschieden, welcher in einer Laufzeit von O(n^2) die Berechnung der Schulden abwickelt. Minimal ist dabei die Lösung nicht, da sonst die Laufzeit O(n!) wäre.
+
+Beispielsweise für 10 Personen sparen wir damit 10! - 10^2 = 3628800 - 100 = 3628700 Berechnungen. Dieses Ersparnis in der Berechnung ist unserer Meinung nach tolerierbar, auch wenn die Personen dadurch in Spezialfällen mehrere Überweisungen tätigen müssen, als optimal nötig wären.
+
+== 8. Glossar
+
+[cols="1,5" options="header"]
+|===
+
+|Begriff
+|Definition
+
+|Gruppe
+| Eine Ansammlung von Benutzern die eine oder mehrere gemeinsame Ausgaben getätigt haben.
+
+|Benutzer
+|Eine Person die in einer oder mehreren Gruppe sein kann. Sie kann neue Gruppen erstellen, zu einer
+Gruppe hinzugefügt werden und in einer Gruppe eine neue Teilnehmer/ Ausgabe hinzufügen.
+
+|Ausgabe
+|Eine Betrag an Geld der von einem Benutzer vorgestreckt wurde an eine oder mehrere weitere Benutzer.
+Die Ausgabe beeinhaltet einen Geldbetrag, einen Zweck/ Grund der Ausgabe und die beteiligte Benutzer unterteilt in einen Gläubiger und mindestens einen Schuldner.
+
+|Schuld
+|Ein Geldbetrag der zwischen zwei Benutzer noch offen ist. Benutzer A schuldet dabei Benutzer B einen Betrag an Geld.

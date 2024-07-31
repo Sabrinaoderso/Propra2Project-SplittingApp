@@ -1,0 +1,19 @@
+version: "3.1"
+services:
+  database:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=jdbc"
+      - "POSTGRES_USER=theuser"
+      - "POSTGRES_PASSWORD=thepassword"
+  spring-boot-app:
+    build: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - database
+    environment:
+      - "CLIENT_SECRET=HIER_CLIENT_SECRET_EINGEBEN"
+      - "CLIENT_ID=HIER_CLIENT_ID_EINGEBEN"
